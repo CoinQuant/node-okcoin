@@ -1,1 +1,1 @@
-# node_okcoin
+# node-okcoin
