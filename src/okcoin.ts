@@ -28,12 +28,12 @@ export default class Okcoin implements IOkcoin {
     });
   }
 
-  [Request](uri, query, customOption) {
+  [Request](uri, search, customOption) {
     const urlObj: url.URL = {
       protocol: 'https',
       host: 'www.okcoin.com',
       pathname: path.join('/api/v1', uri),
-      query: query
+      search: search
     };
     const endpoint: string = url.format(urlObj);
     const defaultOption = {
@@ -52,5 +52,11 @@ export default class Okcoin implements IOkcoin {
         this.logger.info(uri, res.res.timing);
         return res.data;
       });
+  }
+
+  getTicker(symbol: string) {
+    if (!symbol) return Promise.reject('market symbol is required');
+    const search: string = JSON.stringify(symbol);
+    return this[Request](`/ticker.do`, search);
   }
 }
